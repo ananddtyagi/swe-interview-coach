@@ -5,9 +5,9 @@ import { useWorkspace } from "@/contexts/WorkspaceContext";
 
 import { useConversation } from '@11labs/react';
 
-export default function useAgent() {
+export default function useWhiteboardInterviewAgent() {
     const { currentProblem } = useProblem();
-    const { editorRef } = useWorkspace();
+    const { umlDiagramRef } = useWorkspace();
     const conversation = useConversation({
         onConnect: () => console.log('Connected'),
         onDisconnect: () => console.log('Disconnected'),
@@ -16,10 +16,10 @@ export default function useAgent() {
     });
 
     const clientTools = {
-        getCurrentCode: async () => {
-            const code = editorRef.current?.getValue()
-            console.log('getCurrentCode', code)
-            return code
+        getCurrentDiagram: async () => {
+            const diagram = umlDiagramRef.current
+            console.log('getCurrentDiagram', diagram)
+            return JSON.stringify(diagram)
         },
     }
 
@@ -33,7 +33,7 @@ export default function useAgent() {
             await navigator.mediaDevices.getUserMedia({ audio: true });
             // Start the conversation with your agent
             await conversation.startSession({
-                agentId: 'MAUCQe7LwkQtcnpS8vDn', // Replace with your agent ID
+                agentId: 'jybxeMFazTb6aVnT7lKW', // Replace with your agent ID
                 clientTools,
                 dynamicVariables
             });

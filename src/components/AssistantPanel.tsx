@@ -1,9 +1,11 @@
 'use client';
 
-import useAgent from '@/hooks/useAgent';
+import useWhiteboardInterviewAgent from "@/hooks/useWhiteboardInterviewAgent";
+
 
 export function AssistantPanel() {
-    const { conversation, startConversation, stopConversation } = useAgent();
+    // const { conversation, startConversation, stopConversation } = useCodeInterviewAgent();
+    const { conversation, startConversation, stopConversation } = useWhiteboardInterviewAgent();
     return (
 
         <div className="flex flex-col items-center gap-4">

@@ -1,5 +1,6 @@
 import AssistantPanel from '@/components/AssistantPanel';
-import CodeEditor from "@/components/CodeEditor";
+import WhiteBoard from '@/components/WhiteBoard';
+// import CodeEditor from '@/components/CodeEditor';
 import { ProblemSelector } from "@/components/ProblemSelector";
 
 import {
@@ -15,7 +16,7 @@ export default function MyPage() {
     <WorkspaceProvider>
       <ResizablePanelGroup className="container flex h-screen" direction="horizontal">
         <ResizablePanel>
-          <CodeEditor />
+          <WhiteBoard />
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel>
@@ -33,6 +34,5 @@ export default function MyPage() {
         </ResizablePanel>
       </ResizablePanelGroup>
     </WorkspaceProvider>
-
   );
 }

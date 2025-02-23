@@ -1,9 +1,4 @@
 
-import { palindrome } from "./palindrome";
-import { twoSum } from "./twoSum";
-import { Problem } from "./types";
-
-export const problems: Problem[] = [
-    palindrome,
-    twoSum,
-]
+export * as coding_problems from "./coding_problems";
+export type { Problem } from "./problem.types";
+export * as whiteboard_problems from "./whiteboard_problems";

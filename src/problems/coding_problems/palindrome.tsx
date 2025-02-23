@@ -1,4 +1,4 @@
-import { Problem } from "./types";
+import { Problem } from "../problem.types";
 
 export const palindrome: Problem = {
     name: "Palindrome",

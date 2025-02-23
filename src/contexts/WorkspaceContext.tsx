@@ -1,21 +1,25 @@
 'use client';
 
+import { Edge, Node } from '@xyflow/react';
 import { editor as monacoEditor } from 'monaco-editor';
 import { createContext, useContext, useRef } from 'react';
 
 interface WorkspaceContextType {
     editorRef: React.RefObject<monacoEditor.IStandaloneCodeEditor>;
+    umlDiagramRef: React.RefObject<{ nodes: Node[]; edges: Edge[] } | null>;
 }
 
 const WorkspaceContext = createContext<WorkspaceContextType>({
-    editorRef: { current: null }
+    editorRef: { current: null },
+    umlDiagramRef: { current: null }
 });
 
 export const WorkspaceProvider = ({ children }: { children: React.ReactNode }) => {
     const editorRef = useRef<monacoEditor.IStandaloneCodeEditor | null>(null);
+    const umlDiagramRef = useRef<{ nodes: Node[]; edges: Edge[] } | null>(null);
 
     return (
-        <WorkspaceContext.Provider value={{ editorRef }}>
+        <WorkspaceContext.Provider value={{ editorRef, umlDiagramRef }}>
             {children}
         </WorkspaceContext.Provider>
     );
