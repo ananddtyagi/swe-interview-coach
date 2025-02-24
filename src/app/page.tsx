@@ -18,16 +18,20 @@ export default function MyPage() {
   return (
     <ModeProvider>
       <WorkspaceProvider>
-        <AgentProvider>
-          <ResizablePanelGroup className="container flex h-screen" direction="horizontal">
-            <ModeSelector />
-            <ResizablePanel>
-              <UserWorkpanel />
-            </ResizablePanel>
-            <ResizableHandle />
-            <ResizablePanel>
-              <ResizablePanelGroup direction="vertical">
-                <ProblemProvider>
+        <ProblemProvider>
+
+          <AgentProvider>
+            <ResizablePanelGroup direction="horizontal">
+              <ResizablePanel defaultSize={10}>
+                <ModeSelector />
+              </ResizablePanel>
+              <ResizableHandle />
+              <ResizablePanel>
+                <UserWorkpanel />
+              </ResizablePanel>
+              <ResizableHandle />
+              <ResizablePanel>
+                <ResizablePanelGroup direction="vertical" className="h-full w-2/5">
                   <ResizablePanel>
                     <ProblemSelector />
                   </ResizablePanel>
@@ -35,12 +39,12 @@ export default function MyPage() {
                   <ResizablePanel>
                     <AssistantPanel />
                   </ResizablePanel>
-                </ProblemProvider>
-              </ResizablePanelGroup>
-            </ResizablePanel>
-          </ResizablePanelGroup>
-        </AgentProvider>
+                </ResizablePanelGroup>
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </AgentProvider>
+        </ProblemProvider>
       </WorkspaceProvider>
-    </ModeProvider>
+    </ModeProvider >
   );
 }

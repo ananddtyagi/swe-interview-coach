@@ -8,6 +8,8 @@ export default function useCodeInterviewAgent() {
     const { currentProblem } = useProblem();
     const { editorRef } = useWorkspace();
 
+    console.log('currentProblem', currentProblem)
+
     const clientTools = {
         getCurrentCode: async () => {
             const code = editorRef.current?.getValue()

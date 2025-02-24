@@ -7,8 +7,10 @@ import {
     Background,
     Connection,
     Edge,
+    EdgeChange,
     MiniMap,
     Node,
+    NodeChange,
     ReactFlow,
     ReactFlowProvider
 } from '@xyflow/react';
@@ -50,7 +52,9 @@ function Whiteboard() {
 
     // Function to add a node to the canvas at a default position
     const addNode = () => {
-        const position = { x: 100, y: 100 }; // Default position
+        const canvasCenter = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        const jitter = () => Math.random() * 100 - 50; // Random jitter between -50 and 50
+        const position = { x: canvasCenter.x - 400 + jitter(), y: canvasCenter.y - 100 + jitter() };
         const newNode = {
             id: getId(),
             type: 'ResizableNode',
@@ -62,13 +66,13 @@ function Whiteboard() {
         setNodes((nds) => nds.concat(newNode));
     };
 
-
     return (
-        <div style={{ display: 'flex', height: '100vh' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
             {/* Sidebar for UML elements */}
             <aside
                 style={{
-                    width: '100%',
+                    width: '100%', // Set the width to 100% for the top position
+                    height: '150px', // Set a fixed height for the sidebar
                     border: '1px solid #ddd',
                     padding: '10px',
                     boxSizing: 'border-box',
@@ -100,8 +104,8 @@ function Whiteboard() {
                     <ReactFlow
                         nodes={nodes}
                         edges={edges}
-                        onNodesChange={(changes) => setNodes((nds) => applyNodeChanges(changes, nds))}
-                        onEdgesChange={(changes) => setEdges((eds) => applyEdgeChanges(changes, eds))}
+                        onNodesChange={(changes: NodeChange<Node>[]) => setNodes((nds) => applyNodeChanges(changes, nds))}
+                        onEdgesChange={(changes: EdgeChange<Edge>[]) => setEdges((eds) => applyEdgeChanges(changes, eds))}
                         onConnect={onConnect}
                         nodeTypes={nodeTypes}
                     // fitView
