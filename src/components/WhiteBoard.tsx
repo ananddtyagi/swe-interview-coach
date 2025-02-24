@@ -111,7 +111,7 @@ function Whiteboard() {
                     }}
                     onClick={() => addNode()}
                 >
-                    Class
+                    Component
                 </div>
             </aside>
             <div style={{ flexGrow: 1, position: 'relative' }}>
