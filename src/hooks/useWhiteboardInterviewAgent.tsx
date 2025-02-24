@@ -1,19 +1,11 @@
-import { useCallback } from "react";
 
 import { useProblem } from "@/contexts/ProblemContext";
 import { useWorkspace } from "@/contexts/WorkspaceContext";
-
-import { useConversation } from '@11labs/react';
+import useInterviewAgent from "./useInterviewAgent";
 
 export default function useWhiteboardInterviewAgent() {
     const { currentProblem } = useProblem();
     const { umlDiagramRef } = useWorkspace();
-    const conversation = useConversation({
-        onConnect: () => console.log('Connected'),
-        onDisconnect: () => console.log('Disconnected'),
-        onMessage: (message) => console.log('Message:', message),
-        onError: (error) => console.error('Error:', error),
-    });
 
     const clientTools = {
         getCurrentDiagram: async () => {
@@ -27,25 +19,6 @@ export default function useWhiteboardInterviewAgent() {
         problemName: currentProblem?.name,
         problemStatement: currentProblem?.problem,
     }
-    const startConversation = useCallback(async () => {
-        try {
-            // Request microphone permission
-            await navigator.mediaDevices.getUserMedia({ audio: true });
-            // Start the conversation with your agent
-            await conversation.startSession({
-                agentId: 'jybxeMFazTb6aVnT7lKW', // Replace with your agent ID
-                clientTools,
-                dynamicVariables
-            });
 
-        } catch (error) {
-            console.error('Failed to start conversation:', error);
-        }
-    }, [conversation]);
-
-    const stopConversation = useCallback(async () => {
-        await conversation.endSession();
-    }, [conversation]);
-
-    return { conversation, startConversation, stopConversation }
+    return useInterviewAgent({ agentId: 'jybxeMFazTb6aVnT7lKW', clientTools, dynamicVariables })
 }

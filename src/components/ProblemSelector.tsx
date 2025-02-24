@@ -6,7 +6,7 @@ export const ProblemSelector = () => {
 
     const handleProblemChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedIndex = event.target.selectedIndex - 1; // Adjust for the disabled option
-        if (selectedIndex >= 0) {
+        if (selectedIndex >= 0 && selectedIndex < allProblems.length) {
             setCurrentProblem(allProblems[selectedIndex]);
         }
     };

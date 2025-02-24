@@ -1,0 +1,50 @@
+.mode-selector {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    width: 200px;
+    transition: all 0.3s ease;
+}
+
+.mode-selector.open {
+    background-color: #f9f9f9;
+}
+
+.mode-selector.closed {
+    background-color: #e0e0e0;
+}
+
+.toggle-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-button:hover {
+    background-color: #0056b3;
+}
+
+.mode-options {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.mode-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.mode-button:hover {
+    background-color: #218838;
+} 

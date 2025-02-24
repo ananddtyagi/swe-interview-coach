@@ -68,10 +68,7 @@ function Whiteboard() {
             {/* Sidebar for UML elements */}
             <aside
                 style={{
-                    position: 'absolute',
-                    top: 10,
-                    left: 10,
-                    width: 200,
+                    width: '100%',
                     border: '1px solid #ddd',
                     padding: '10px',
                     boxSizing: 'border-box',
