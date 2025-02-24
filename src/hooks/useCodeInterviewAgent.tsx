@@ -3,18 +3,19 @@ import { useProblem } from "@/contexts/ProblemContext";
 import { useWorkspace } from "@/contexts/WorkspaceContext";
 import useInterviewAgent from "./useInterviewAgent";
 
-
 export default function useCodeInterviewAgent() {
     const { currentProblem } = useProblem();
-    const { editorRef } = useWorkspace();
-
-    console.log('currentProblem', currentProblem)
+    const { editorRef, runOutput } = useWorkspace();
 
     const clientTools = {
         getCurrentCode: async () => {
             const code = editorRef.current?.getValue()
             console.log('getCurrentCode', code)
             return code
+        },
+        getRunOutput: async () => {
+            console.log('getRunOutput hello', runOutput.current)
+            return runOutput.current
         },
     }
 

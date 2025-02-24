@@ -22,8 +22,6 @@ export const ProblemProvider = ({ children }: { children: React.ReactNode }) => 
     const [currentProblem, setCurrentProblem] = useState<Problem | null>(allProblems[0] || null);
 
     useEffect(() => {
-        console.log('currentProblem', currentProblem)
-
         setCurrentProblem(allProblems[0]);
     }, [mode]);
 

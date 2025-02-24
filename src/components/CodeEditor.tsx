@@ -5,6 +5,8 @@ import { editor as monacoEditor } from 'monaco-editor'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import getCurrentCode from '../hooks/getCurrentCode'
+import { Button } from './ui/button'
+import { Card, CardContent } from './ui/card'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from './ui/resizable'
 // Disable SSR for the Monaco editor to avoid issues with window references
 const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
@@ -12,7 +14,7 @@ const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
 })
 
 export default function CodeEditorPage() {
-    const { editorRef } = useWorkspace()
+    const { editorRef, runOutput } = useWorkspace()
     const [output, setOutput] = useState<string>('')
 
     const handleEditorDidMount = (editor: monacoEditor.IStandaloneCodeEditor) => {
@@ -30,20 +32,30 @@ export default function CodeEditorPage() {
 
         // Override console.log to capture its output
         const originalConsoleLog = console.log
+        let capturedOutput = ''
+
         console.log = (...args) => {
-            setOutput(prevOutput => prevOutput + args.join(' ') + '\n')
+            const logString = args.join(' ') + '\n'
+            capturedOutput += logString
+            setOutput(prevOutput => prevOutput + logString)
             originalConsoleLog(...args)
         }
 
         try {
             const result = eval(code)
-            setOutput(prevOutput => prevOutput + String(result) + '\n')
-        } catch (err) {
-            if (err instanceof Error) {
-                setOutput(prevOutput => prevOutput + `Error: ${err.message}\n`)
-            } else {
-                setOutput(prevOutput => prevOutput + `Error: An unknown error occurred\n`)
+            if (result !== undefined) {
+                const resultString = String(result) + '\n'
+                capturedOutput += resultString
+                setOutput(prevOutput => prevOutput + resultString)
             }
+            // Set the complete output including both console.logs and result
+            runOutput.current = capturedOutput
+        } catch (err) {
+            const errorMessage = err instanceof Error
+                ? `Error: ${err.message}\n`
+                : `Error: An unknown error occurred\n`
+            setOutput(prevOutput => prevOutput + errorMessage)
+            runOutput.current = capturedOutput + errorMessage
         } finally {
             // Restore the original console.log
             console.log = originalConsoleLog
@@ -51,10 +63,9 @@ export default function CodeEditorPage() {
     }
 
     return (
-        <ResizablePanelGroup className="container flex h-screen" direction="vertical">
-
-            <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-                <ResizablePanel style={{ flex: 1 }}>
+        <div className="container h-screen p-4 bg-background">
+            <ResizablePanelGroup direction="vertical" className="min-h-[calc(100vh-2rem)]">
+                <ResizablePanel defaultSize={70}>
                     <MonacoEditor
                         height="100%"
                         defaultLanguage="javascript"
@@ -63,23 +74,32 @@ export default function CodeEditorPage() {
                         options={{
                             minimap: { enabled: false },
                             fontSize: 14,
+                            padding: { top: 16 },
                         }}
+                        className="rounded-md overflow-hidden"
                     />
                 </ResizablePanel>
-                <ResizableHandle />
-                <ResizablePanel>
-                    <button
-                        style={{ padding: '1rem', fontSize: '1rem', cursor: 'pointer' }}
-                        onClick={runCode}
-                    >
-                        Run Code
-                    </button>
-                    <div style={{ padding: '1rem', backgroundColor: '#f0f0f0', minHeight: '100px' }}>
-                        <strong>Output:</strong>
-                        <pre>{output}</pre>
-                    </div>
+                <ResizableHandle className="my-1" />
+                <ResizablePanel defaultSize={30}>
+                    <Card className="h-full">
+                        <CardContent className="p-4 space-y-4">
+                            <div className="flex justify-between items-center">
+                                <h3 className="text-lg font-semibold">Output</h3>
+                                <Button
+                                    onClick={runCode}
+                                    size="sm"
+                                    className="px-4"
+                                >
+                                    Run Code
+                                </Button>
+                            </div>
+                            <div className="bg-muted rounded-lg p-4 font-mono text-sm overflow-auto max-h-[calc(100%-4rem)]">
+                                <pre className="whitespace-pre-wrap">{output || 'No output yet...'}</pre>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </ResizablePanel>
-            </div>
-        </ResizablePanelGroup>
+            </ResizablePanelGroup>
+        </div>
     )
 }

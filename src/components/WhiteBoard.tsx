@@ -25,8 +25,6 @@ const nodeTypes = {
 let id = 0;
 const getId = () => `node_${id++}`;
 
-
-
 function Whiteboard() {
     const [nodes, setNodes] = useState<Node[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
@@ -38,44 +36,60 @@ function Whiteboard() {
             edges: edges as Edge[]
         };
         umlDiagramRef.current = diagram;
+        console.log(diagram);
     }, [nodes, edges, umlDiagramRef]);
 
-    // Use useEffect to update the diagram whenever nodes or edges change
     useEffect(() => {
         onDiagramUpdate();
     }, [nodes, edges, onDiagramUpdate]);
 
-    // Handle connecting two nodes
     const onConnect = useCallback((params: Connection) => {
         setEdges((eds) => addEdge(params, eds));
     }, []);
 
-    // Function to add a node to the canvas at a default position
+    const setNameInfo = useCallback((id: string, name: string) => {
+        setNodes((nds) =>
+            nds.map((node) =>
+                node.id === id ? { ...node, data: { ...node.data, name } } : node
+            )
+        );
+    }, []);
+
+    const setPurposeInfo = useCallback((id: string, purpose: string) => {
+        setNodes((nds) =>
+            nds.map((node) =>
+                node.id === id ? { ...node, data: { ...node.data, purpose } } : node
+            )
+        );
+    }, []);
+
     const addNode = () => {
         const canvasCenter = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-        const jitter = () => Math.random() * 100 - 50; // Random jitter between -50 and 50
+        const jitter = () => Math.random() * 100 - 50;
         const position = { x: canvasCenter.x - 400 + jitter(), y: canvasCenter.y - 100 + jitter() };
         const newNode = {
             id: getId(),
             type: 'ResizableNode',
-            data: { label: `Node` },
+            data: {
+                label: `Node`,
+                name: '',
+                purpose: '',
+                setNameInfo,
+                setPurposeInfo
+            },
             position,
-            style: {
-            }
         };
         setNodes((nds) => nds.concat(newNode));
     };
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-            {/* Sidebar for UML elements */}
             <aside
                 style={{
-                    width: '100%', // Set the width to 100% for the top position
-                    height: '150px', // Set a fixed height for the sidebar
+                    width: '100%',
+                    height: '150px',
                     border: '1px solid #ddd',
                     padding: '10px',
-                    boxSizing: 'border-box',
                     background: '#fff',
                     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
                     zIndex: 1000
@@ -87,7 +101,6 @@ function Whiteboard() {
                         padding: '8px',
                         marginBottom: '5px',
                         border: '1px solid #333',
-                        borderRadius: '4px',
                         background: '#f7f7f7',
                         cursor: 'pointer'
                     }}
@@ -95,10 +108,7 @@ function Whiteboard() {
                 >
                     Class
                 </div>
-                {/* Additional UML elements (e.g., Interface, Enum) can be added similarly */}
             </aside>
-
-            {/* Canvas area for ReactFlow */}
             <div style={{ flexGrow: 1, position: 'relative' }}>
                 <ReactFlowProvider>
                     <ReactFlow
@@ -108,10 +118,8 @@ function Whiteboard() {
                         onEdgesChange={(changes: EdgeChange<Edge>[]) => setEdges((eds) => applyEdgeChanges(changes, eds))}
                         onConnect={onConnect}
                         nodeTypes={nodeTypes}
-                    // fitView
                     >
                         <MiniMap />
-                        {/* <Controls /> */}
                         <Background />
                     </ReactFlow>
                 </ReactFlowProvider>

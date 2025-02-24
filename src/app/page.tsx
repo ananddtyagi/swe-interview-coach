@@ -19,28 +19,29 @@ export default function MyPage() {
     <ModeProvider>
       <WorkspaceProvider>
         <ProblemProvider>
-
           <AgentProvider>
             <ResizablePanelGroup direction="horizontal">
               <ResizablePanel defaultSize={10}>
                 <ModeSelector />
               </ResizablePanel>
               <ResizableHandle />
-              <ResizablePanel>
-                <UserWorkpanel />
-              </ResizablePanel>
-              <ResizableHandle />
-              <ResizablePanel>
-                <ResizablePanelGroup direction="vertical" className="h-full w-2/5">
-                  <ResizablePanel>
+              <ResizablePanel defaultSize={40}>
+                <ResizablePanelGroup direction="vertical" >
+                  <ResizablePanel defaultSize={70}>
                     <ProblemSelector />
                   </ResizablePanel>
                   <ResizableHandle />
-                  <ResizablePanel>
+                  <ResizablePanel defaultSize={30}>
                     <AssistantPanel />
                   </ResizablePanel>
                 </ResizablePanelGroup>
               </ResizablePanel>
+              <ResizableHandle />
+
+              <ResizablePanel>
+                <UserWorkpanel />
+              </ResizablePanel>
+
             </ResizablePanelGroup>
           </AgentProvider>
         </ProblemProvider>
