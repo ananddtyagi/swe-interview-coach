@@ -17,7 +17,7 @@ export function AssistantPanel() {
                         <Button
                             onClick={startConversation}
                             disabled={conversation.status === 'connected'}
-                            variant="primary"
+                            variant="default"
                         >
                             Start Conversation
                         </Button>
