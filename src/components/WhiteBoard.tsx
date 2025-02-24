@@ -95,14 +95,19 @@ function Whiteboard() {
                     zIndex: 1000
                 }}
             >
-                <h3>UML Elements</h3>
+                <h3>UML Elements (click to add)</h3>
                 <div
                     style={{
                         padding: '8px',
                         marginBottom: '5px',
                         border: '1px solid #333',
                         background: '#f7f7f7',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        width: '100px',
+                        height: '40px',
+
+                        alignItems: 'center',
+                        justifyContent: 'center'
                     }}
                     onClick={() => addNode()}
                 >
